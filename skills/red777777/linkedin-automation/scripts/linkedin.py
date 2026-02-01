@@ -11,6 +11,7 @@ from lib.feed import read_feed
 from lib.profile import scrape_activity
 from lib.analytics import get_post_analytics, get_profile_stats
 from lib.like_monitor import scan_recent_likes
+from lib.style_learner import learn_profile, get_style
 
 
 def main():
@@ -66,6 +67,13 @@ def main():
     p_likes = sub.add_parser("scan-likes", help="Scan recent likes for new ones since last check")
     p_likes.add_argument("--count", type=int, default=15)
 
+    # learn-profile
+    p_learn = sub.add_parser("learn-profile", help="Scan your posts/comments to learn your voice and topics")
+    p_learn.add_argument("--count", type=int, default=15)
+
+    # get-style
+    sub.add_parser("get-style", help="Show the learned style profile")
+
     args = parser.parse_args()
 
     if os.environ.get("LINKEDIN_DEBUG"):
@@ -97,6 +105,10 @@ def main():
         result = get_profile_stats()
     elif args.action == "scan-likes":
         result = scan_recent_likes(args.count)
+    elif args.action == "learn-profile":
+        result = learn_profile(args.count)
+    elif args.action == "get-style":
+        result = get_style() or {"error": "No style learned yet. Run: linkedin.py learn-profile"}
     else:
         parser.print_help()
         sys.exit(1)

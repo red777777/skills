@@ -102,9 +102,21 @@ Always show the user exactly what will be posted and get a clear "yes" before ex
 ## Setup
 
 1. Install dependencies: `pip install playwright && playwright install chromium`
-2. Configure browser profile path in `scripts/lib/browser.py`
+2. Configure browser profile path in `scripts/lib/browser.py` (or set `LINKEDIN_BROWSER_PROFILE` env var)
 3. Log in to LinkedIn manually once (the session persists)
 4. Run `python3 scripts/linkedin.py check-session` to verify
+5. **Learn your voice:** Run `python3 scripts/linkedin.py learn-profile` — this scans your recent posts and comments to learn your tone, topics, language, and style. The agent uses this profile when suggesting comments/posts so they sound like **you**, not like a generic bot.
+
+## Voice & Style
+
+On first setup, `learn-profile` analyzes your content and saves a style profile (`~/.linkedin-style.json`) containing:
+- **Language** (de/en/mixed)
+- **Tone** (casual / professional / professional-friendly)
+- **Emoji usage** (heavy / moderate / minimal)
+- **Top hashtags** you use
+- **Sample posts and comments** for voice reference
+
+The agent should ALWAYS read this profile (`get-style`) before drafting any comment or post suggestion. Never impose a foreign voice — match the user's natural style.
 
 ## Troubleshooting
 
